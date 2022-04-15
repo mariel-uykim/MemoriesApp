@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { 
     Poppins_300Light,
@@ -17,6 +17,7 @@ import ActionButton from '../Components/ActionButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigation } from "@react-navigation/native";
+import { Users } from '../constants/users';
 
 const loginSchema = Yup.object().shape(
     {
@@ -28,7 +29,7 @@ const loginSchema = Yup.object().shape(
 const LoginScreen = () => {
 
     const nav = useNavigation();
-
+    
     let [load] = useFonts({
         Poppins_300Light,
         Poppins_300Light_Italic,
@@ -39,12 +40,20 @@ const LoginScreen = () => {
         Poppins_700Bold,
         Poppins_700Bold_Italic
     })
+
     if(!load) {
         return <AppLoading/>
     }
 
     const verifyUser = (user) => {
-        console.log(user)
+        const exists = Users.some((u) => u.username == user.username && u.password == user.password)
+        
+        if (exists) {
+            nav.navigate("Home", { user })
+        }
+        else {
+            Alert.alert("Invalid Credential", "Please check input!")
+        }
     }
 
     return (

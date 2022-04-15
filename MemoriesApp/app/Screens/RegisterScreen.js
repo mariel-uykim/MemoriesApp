@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { 
     Poppins_300Light,
@@ -17,16 +17,18 @@ import ActionButton from '../Components/ActionButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigation } from "@react-navigation/native";
+import { Users } from '../constants/users';
+import { useState } from 'react';
 
 const registerSchema = Yup.object().shape(
     {
-        firstName: Yup.string().required().label('First name'),
         username: Yup.string().required().min(3).max(12).label('Username'),
         email: Yup.string().required().email().label('Email'),
         password: Yup.string().required().min(5).max(12).label('Password')
     }
 )
 const RegisterScreen = () => {
+    const [users, setUsers] = useState(Users)
 
     const nav = useNavigation();
 
@@ -45,7 +47,16 @@ const RegisterScreen = () => {
     }
 
     const createUser = (user) => {
-        console.log(user)
+        let exists = users.some((u) => u.username == user.username.toLowerCase())
+
+        if(exists) {
+            Alert.alert("Username Exists", "Please use a different username")
+        }
+        else {
+            setUsers(users => [...users, user])
+            nav.navigate("Home", { user })
+        }
+
     }
 
     return (
@@ -54,7 +65,7 @@ const RegisterScreen = () => {
                 <Text style={styles.header}>SignUp</Text>
             </View>
                 <Formik
-                    initialValues={{firstName:'', username:'', email:'', password:''}}
+                    initialValues={{username:'', email:'', password:''}}
                     onSubmit = {(u)=>createUser(u)}
                     validationSchema={registerSchema} 
                 >
@@ -62,15 +73,6 @@ const RegisterScreen = () => {
                     <>
                         <View style={styles.form}>
                             <InputField icon="md-person"
-                                        placeholder="first name"
-                                        placeholderTextColor="#c9c9c9" 
-                                        autoCapitalize="none"
-                                        autoCorrect={false}
-                                        onChangeText = {handleChange("firstName")}
-                                        onBlur={()=>setFieldTouched("firstName")}
-                            />
-                            {touched.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
-                            <InputField icon="person-circle-outline"
                                         placeholder="username"
                                         placeholderTextColor="#c9c9c9" 
                                         autoCapitalize="none"
