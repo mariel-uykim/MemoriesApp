@@ -23,9 +23,11 @@ const AddImage = () => {
     const [image, setImage] = useState(null)
     
     const addToCollection = (event) => {
-        setCollections(collections.filter(c => c != '+ New collection'))
-        setCollections(collections => [...collections, newCollection, '+ New collection'])
-        setSelectedCollection(newCollection)
+        if(newCollection.length > 0){
+            setCollections(collections.filter(c => c != '+ New collection'))
+            setCollections(collections => [...collections, newCollection, '+ New collection'])
+            setSelectedCollection(newCollection)
+        }
     }
 
     useEffect(async () => {
@@ -79,7 +81,7 @@ const AddImage = () => {
                         placeholder="New Collection Name"
                         style= {{color: Colours.black}}
                         onChangeText={(c) => setNewCollection(c)}/>
-                    <ButtonRegular text="+" onPress={()=>addToCollection()}/>
+                    <ButtonRegular icon="add" onPress={()=>addToCollection()} style={{width: 35, height: 35, borderRadius: 20}}/>
                 </View>}
                 <View style={styles.imgUpload}>
                     {(image) ? <Image source={{ uri: image }} style={styles.chosenImg} /> :
@@ -87,7 +89,7 @@ const AddImage = () => {
                                     <Ionicons name="image" size={40} color={Colours.white}/>
                                 </View>
                     }
-                    <ButtonRegular text="Upload Image" onPress={selectImage}/>
+                    <ButtonRegular text="Upload Image" onPress={selectImage} style={{padding: 10}}/>
                 </View>
                 <View style={styles.uploadBtn}>
                     <ActionButton text="Upload"/>
@@ -142,7 +144,8 @@ const styles = StyleSheet.create({
         padding: 80
     },
     imgUpload: {
-        backgroundColor: Colours.grey
+        backgroundColor: Colours.grey,
+        marginVertical: 20
     },
     uploadBtn: {
         marginHorizontal: 10,

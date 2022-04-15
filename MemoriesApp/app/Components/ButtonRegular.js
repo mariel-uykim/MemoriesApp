@@ -1,15 +1,28 @@
 import React from 'react'
-import { Button, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text } from 'react-native'
 import { Colours } from '../constants/theme'
+import { Ionicons } from '@expo/vector-icons';
 
-const ButtonRegular = ({text, onPress, style}) => {
+const ButtonRegular = ({text, icon, onPress, style, iconSize=20}) => {
   return (
-    <Button title={text} onPress={onPress} style={[styles.btn, style]}/>
+    <TouchableOpacity onPress={onPress} style={[styles.btn, style]}>
+        {icon && <Ionicons name={icon} size={iconSize} color={Colours.white}/>}
+        {text && <Text style={styles.btnText}>{text}</Text>}
+    </TouchableOpacity>
   )
 }
 const styles = StyleSheet.create({
     btn: {
-        color: Colours.secondary
+        backgroundColor: Colours.tertiary,
+        color: Colours.white,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    btnText: {
+        textAlign: 'center',
+        fontFamily: 'Poppins_600SemiBold',
+        fontSize: 15,
+        color: Colours.white
     }
 })
 export default ButtonRegular
