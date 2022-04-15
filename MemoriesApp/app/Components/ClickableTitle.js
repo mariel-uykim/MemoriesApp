@@ -1,12 +1,12 @@
 import React from 'react'
-import { TouchableHighlight, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { Colours } from '../constants/theme'
 
 const ClickableTitle = ({text, onPress}) => {
   return (
-    <TouchableHighlight>
+    <TouchableOpacity onPress={onPress}>
         <Text style={styles.text}>{text} > </Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
   )
 }
 const styles = StyleSheet.create({

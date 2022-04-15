@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 120,
         width: 130,
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         paddingVertical: 8,
-        marginHorizontal: 4
+        marginHorizontal: 5
     },
     img: {
         width: 130,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import WelcomeScreen from './app/Screens/WelcomeScreen';
 import RegisterScreen from './app/Screens/RegisterScreen';
@@ -7,8 +6,9 @@ import LoginScreen from './app/Screens/LoginScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import HomeScreen from './app/Screens/HomeScreen';
-import * as Font from 'expo-font';
-
+import CollectionScreen from './app/Screens/CollectionScreen';
+import GalleryScreen from './app/Screens/GalleryScreen';
+import AddImage from './app/Screens/AddImageScreen';
 
 const Stack = createStackNavigator();
 const theme = {
@@ -30,6 +30,9 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Collection" component={CollectionScreen}/>
+        <Stack.Screen name="Gallery" component={GalleryScreen}/>
+        <Stack.Screen name="AddImage" component={AddImage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

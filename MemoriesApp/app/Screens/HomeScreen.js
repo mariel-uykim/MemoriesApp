@@ -2,7 +2,6 @@ import { ScrollView,
          Text, 
          StyleSheet, 
          View, 
-         TouchableHighlight, 
          Image, 
          FlatList,
         TouchableOpacity } from 'react-native';
@@ -26,12 +25,21 @@ import CollectionButton from '../Components/CollectionButton';
 import { useNavigation } from "@react-navigation/native";
 import { imageData } from '../constants/images';
 import ImageGrid from '../Components/ImageGrid';
+import GridView from '../Components/GridView';
+import LogoHeader from '../Components/LogoHeader';
 
 const HomeScreen = () => {
 
-  const nav = useNavigation();
+  const navigation = useNavigation();
+
   const [photos, setPhotos] = useState(imageData)
-  
+  const [collections, setCollections] = useState(
+    Object.values(photos.reduce((col, {collection, img}) => {
+      col[collection] = {collection, img}
+      return col
+    }, {}))
+  )
+
   let [load] = useFonts({
     Poppins_300Light,
     Poppins_300Light_Italic,
@@ -51,13 +59,10 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.topBar}>
-          <View style={styles.logo}>
-            <Image style={styles.logoImg} source={require('../assets/images/logo-purple.png')}/>
-            <Text style={styles.logoText}>MemoryLane</Text>
-          </View>
-          <TouchableHighlight style={styles.exitBtn} onPress={() => nav.navigate("Welcome")}>
+          <LogoHeader/>
+          <TouchableOpacity style={styles.exitBtn} onPress={() => navigation.navigate("Welcome")}>
             <Ionicons style="exit" name="log-out" size={30} color={Colours.primary}/>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
         <View style={styles.greetings}>
           <Text style={styles.welcome}>Welcome, </Text>
@@ -66,26 +71,35 @@ const HomeScreen = () => {
         <View style={styles.lineBreak}></View>
       </View>
       <View style={styles.collections}>
-        <TouchableHighlight>
+        <TouchableOpacity>
           <ClickableTitle text="Collections" />
-        </TouchableHighlight>
-        <ScrollView horizontal={true} style={styles.collectionView}>
-          <CollectionButton img={require('../assets/images/sample2.jpg')} title="fun"/>
-          <CollectionButton img={require('../assets/images/sample3.jpg')} title="love"/>
-          <CollectionButton img={require('../assets/images/sample1.jpg')} title="europe"/>
-          <CollectionButton img={require('../assets/images/sample8.jpg')} title="skii"/>
-          <CollectionButton img={require('../assets/images/sample6.jpg')} title="night"/>
-        </ScrollView>
+        </TouchableOpacity>
+        <FlatList
+          style={styles.collectionView}
+          data = {collections}
+          keyExtractor={(i, idx) => idx.toString()}
+          horizontal={true}
+          renderItem = {({ item }) => (
+            <CollectionButton 
+              img={item.img} 
+              title={item.collection} 
+              onPress={() => {
+                const filteredImgs = photos.filter((i) => {
+                  return i.collection == item.collection
+                })
+                navigation.navigate("Collection", { filteredImgs })
+              }}/>
+          )}
+        />
       </View>
       <View style={styles.photos}>
-        <ClickableTitle text="All Photos" />
-        <FlatList 
-                  numColumns={3}
-                  data = {photos}
-                  keyExtractor={(i, idx) => idx.toString()}
-                  renderItem = {({ item }) => (<ImageGrid photo = {item}/>)}/>
+        <ClickableTitle 
+          text="All Photos" 
+          onPress={()=>navigation.navigate("Gallery", { photos })}
+        />
+        <GridView data={photos}/>
       </View>
-      <TouchableOpacity style={styles.addBtn}>
+      <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate("AddImage")}>
         <Ionicons name="add" size={70} color={Colours.white} style="addIcon"/>
       </TouchableOpacity>
     </View>
@@ -95,7 +109,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 30
+    marginTop: 35
   },
   header: {
     flex: 1
@@ -111,17 +125,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center'
   },
-  logo: {
-    flex: 1,
-    flex: 1,
-    flexDirection: 'row'
-  },
-  logoImg: {
-    width: 30,
-    height: 30,
-    marginVertical: 8,
-    marginHorizontal: 10
-  },
   collections: {
     flex: 1
   },
@@ -130,12 +133,7 @@ const styles = StyleSheet.create({
     padding:10
   },
   collectionView: {
-    paddingHorizontal: 10
-  },
-  logoText: {
-    fontSize: 30,
-    fontFamily: 'Poppins_700Bold',
-    color: Colours.primary
+    marginRight: 10
   },
   exitBtn: {
     paddingVertical: 8,
@@ -155,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontFamily: 'Poppins_700Bold',
     color: Colours.primary,
-    top: -20
+    top: -15
   },
   addBtn: {
     alignItems: 'center',

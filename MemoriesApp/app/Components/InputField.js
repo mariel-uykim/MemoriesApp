@@ -3,11 +3,11 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Colours } from '../constants/theme';
 
-const InputField = ({icon, ...otherProps}) => {
+const InputField = ({icon, style, ...otherProps}) => {
   return (
     <View style={styles.inputWrap}>
-      {icon && <Ionicons style={styles.icon} name={icon} size={25}/>}
-      <TextInput style={styles.input} {...otherProps}/>
+      {icon && <Ionicons style={[styles.icon, style]} name={icon} size={25}/>}
+      <TextInput style={[styles.input, style]} {...otherProps}/>
     </View>
   )
 }
