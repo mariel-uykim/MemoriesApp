@@ -17,6 +17,10 @@ import { useNavigation } from "@react-navigation/native";
 import ActionButton from '../Components/ActionButton';
 import { Dimensions } from 'react-native';
 
+//WelcomeScreen: The first page that loads when the app
+//is newly loaded. Greets the users and sends them to the
+//register screen when they click on the 'get started' button.
+
 const WelcomeScreen = () => {
     const nav = useNavigation();
 

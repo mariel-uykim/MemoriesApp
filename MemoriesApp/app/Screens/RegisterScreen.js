@@ -20,6 +20,11 @@ import { useNavigation } from "@react-navigation/native";
 import { Users } from '../constants/users';
 import { useState } from 'react';
 
+
+//RegisterScreen: displays a form where the input is validated using Yup.
+//Redirects user to the home page if the sign up button is clicked and 
+//the user inputs valid data.
+
 const registerSchema = Yup.object().shape(
     {
         username: Yup.string().required().min(3).max(12).label('Username'),
@@ -61,8 +66,9 @@ const RegisterScreen = () => {
 
     return (
         <View style={styles.background}>
+            <View style={styles.emptyBox}/>
             <View style={styles.container}>
-                <Text style={styles.header}>SignUp</Text>
+                <Text style={styles.header}>Sign Up</Text>
             </View>
                 <Formik
                     initialValues={{username:'', email:'', password:''}}
@@ -123,8 +129,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colours.primary,
     },
+    emptyBox: {
+        flex: 1
+    },
     container: {
-        flex: 1,
+        flex: 0.5,
         justifyContent: 'center',
         alignContent: 'center'
     },
@@ -135,7 +144,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     form: {
-        flex: 1,
+        flex: 0.9,
         padding: 10
     },
     loginTxt: {

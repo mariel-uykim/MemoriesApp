@@ -2,13 +2,18 @@ import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { Colours } from '../constants/theme';
 
+//collectionButton: a button used for the collections 
+//displayed in the home screen, displays an image from
+//a collection along with the collection name, navigates
+//to the collection album
+
 const CollectionButton = ({img, title, onPress}) => {
   return (
     <View style={styles.container}>
         <TouchableOpacity onPress={onPress}>
         <ImageBackground 
             style={styles.img} 
-            source={img}
+            source={{ uri : img}}
             imageStyle={{borderRadius:20}}
         >
             <View style={styles.overlay}/>

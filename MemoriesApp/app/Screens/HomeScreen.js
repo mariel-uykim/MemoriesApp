@@ -1,13 +1,11 @@
-import { ScrollView, 
-         Text, 
+import { Text, 
          StyleSheet, 
          View, 
-         Image, 
          FlatList,
         TouchableOpacity } from 'react-native';
 import { Colours } from '../constants/theme';
 import AppLoading from 'expo-app-loading';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
     Poppins_300Light,
     Poppins_300Light_Italic,
@@ -23,23 +21,79 @@ import { Ionicons } from '@expo/vector-icons';
 import ClickableTitle from '../Components/ClickableTitle';
 import CollectionButton from '../Components/CollectionButton';
 import { useNavigation } from "@react-navigation/native";
-import { imageData } from '../constants/images';
-import ImageGrid from '../Components/ImageGrid';
 import GridView from '../Components/GridView';
 import LogoHeader from '../Components/LogoHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const HomeScreen = () => {
+const HomeScreen = ({ route }) => {
+  const [loadedImg, setLoadedImg] = useState(false)
+  const { user } = route.params
+  const imgData = require('../constants/photos.json')
+  const [photos, setPhotos] = useState(imgData)
+  const [lastSixPhotos, setLastSixPhotos] = useState(photos)
 
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
-  const [photos, setPhotos] = useState(imageData)
+  //stores images to the AsyncStorage with the key of 'photos'
+  const storeData = async (data) => {
+    try {
+      const imgs = JSON.stringify(data)
+      await AsyncStorage.setItem('photos', imgs)
+
+    } 
+    catch (e) {
+      console.log(e)
+    }
+  }
+
+  //Checks if images have been loaded. Uses AsyncStorage to retrieve
+  //data and updates the last six photos. This loads once when the home
+  //screen is newly loaded
+  if(!loadedImg) {
+    storeData(imgData)
+
+    AsyncStorage.getItem('photos').then(
+      (val) => { setPhotos(JSON.parse(val)) }
+    )
+    setLastSixPhotos(photos.slice(-6))
+
+    setLoadedImg(true)
+  }
+
+  //sets the list of collections by checking the unique collection
+  //names among the photos
   const [collections, setCollections] = useState(
-    Object.values(photos.reduce((col, {collection, img}) => {
-      col[collection] = {collection, img}
-      return col
-    }, {}))
+    photos.filter((img, i) => photos.findIndex((p) => img.collection === p.collection) === i)
   )
+  
+  //when data from AddImageScreen is sent back it adds photos into array of
+  //photos, updates the latest photos, and updates the list of collection if 
+  //there is a new collection
+  useEffect(() => {
+    if (route.params?.img) {
+      setPhotos(photos => [...photos, route.params.img])
+      setLastSixPhotos(photos.slice(-6))
 
+      let curr = route.params.img.collection
+
+      if(!collections.some((c) => c.collection==curr)) {
+        setCollections(collections => [...collections, route.params.img])
+      }
+    }
+  }, [route.params?.img]);
+
+  //When CollectionListScreen sends back data on deleted screens,
+  //it deletes the collection and the associated images along with it
+  useEffect(() => {
+    if (route.params?.collection) {
+      const deletedList = route.params.collection
+      setPhotos(photos.filter(col => !deletedList.includes(col.collection)))
+      setCollections(collections.filter(col => !deletedList.includes(col.collection)))
+    }
+  }, [route.params?.collection])
+
+  
+  //loads the fonts that will be used
   let [load] = useFonts({
     Poppins_300Light,
     Poppins_300Light_Italic,
@@ -51,6 +105,9 @@ const HomeScreen = () => {
     Poppins_700Bold_Italic
   })
 
+  //does not proceed if the fonts have not 
+  //been loaded, instead shows a loading screen
+  //until it has been loaded
   if(!load) {
       return <AppLoading/>
   }
@@ -66,17 +123,20 @@ const HomeScreen = () => {
         </View>
         <View style={styles.greetings}>
           <Text style={styles.welcome}>Welcome, </Text>
-          <Text style={styles.username}>@Someone</Text>
+          {user && <Text style={styles.username}> { user.username } </Text>}
         </View>
         <View style={styles.lineBreak}></View>
       </View>
       <View style={styles.collections}>
         <TouchableOpacity>
-          <ClickableTitle text="Collections" />
+          <ClickableTitle 
+            text="Collections" 
+            onPress={()=>navigation.navigate("CollectionList", { collections })}
+          />
         </TouchableOpacity>
         <FlatList
-          style={styles.collectionView}
-          data = {collections}
+          style={ styles.collectionView }
+          data = { collections }
           keyExtractor={(i, idx) => idx.toString()}
           horizontal={true}
           renderItem = {({ item }) => (
@@ -92,14 +152,14 @@ const HomeScreen = () => {
           )}
         />
       </View>
-      <View style={styles.photos}>
+      <View style={ styles.photos }>
         <ClickableTitle 
           text="All Photos" 
           onPress={()=>navigation.navigate("Gallery", { photos })}
         />
-        <GridView data={photos}/>
+        <GridView data={lastSixPhotos}/>
       </View>
-      <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate("AddImage")}>
+      <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate("AddImage", { photos })}>
         <Ionicons name="add" size={70} color={Colours.white} style="addIcon"/>
       </TouchableOpacity>
     </View>

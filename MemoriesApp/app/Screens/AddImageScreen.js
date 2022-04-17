@@ -3,25 +3,26 @@ import { Text, View, StyleSheet, TouchableOpacity, Alert, Button, Platform, Imag
 import InputField from '../Components/InputField'
 import { Ionicons } from '@expo/vector-icons';
 import { Colours } from '../constants/theme';
-import { imageData } from '../constants/images';
-import { useNavigation } from "@react-navigation/native";
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 import ActionButton from '../Components/ActionButton';
 import ButtonRegular from '../Components/ButtonRegular';
 
-const AddImage = () => {
-    const navigation = useNavigation();
+//AddImageScreen: A screen that allows users to create a new collection
+//and upload a photo from their devices into the application
+
+const AddImage = ({ route, navigation }) => {
+    const { photos } = route.params
     const [addCollection, setAddCollection] = useState(false)
     const [newCollection, setNewCollection] = useState('')
     const [selectedCollection, setSelectedCollection] = useState("Select...");
-    const [images, setImages] = useState(imageData)
+    const [images, setImages] = useState(photos)
     const [collections, setCollections] = useState(
         [...new Set(images.map(item=>item.collection)), '+ New collection']
     )
-    
     const [image, setImage] = useState(null)
     
+    //Adds new collection to existing collection array
     const addToCollection = (event) => {
         if(newCollection.length > 0){
             setCollections(collections.filter(c => c != '+ New collection'))
@@ -30,6 +31,7 @@ const AddImage = () => {
         }
     }
 
+    //Asks for permission to access device files
     useEffect(async () => {
         if(Platform.OS != "web") {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -39,9 +41,10 @@ const AddImage = () => {
         }
     },[])
     
-     const selectImage = async () => {
+    //Allows users to select an image from their device
+    const selectImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 1,
@@ -52,6 +55,27 @@ const AddImage = () => {
             }
 
      }
+
+     //checks if all required details are filled and sends data
+     //back to home page
+    const uploadImage = () => {
+        if(selectedCollection != '+ New collection' &&
+           image != null) {
+            let newPhoto = {
+                img: image,
+                collection: selectedCollection
+            }
+            
+            navigation.navigate({
+                name: 'Home',
+                params: {'img' : newPhoto},
+                merge: true,
+            })
+        }
+        else {
+            Alert.alert('Invalid Upload', 'Please fill all required information')
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -92,7 +116,7 @@ const AddImage = () => {
                     <ButtonRegular text="Upload Image" onPress={selectImage} style={{padding: 10}}/>
                 </View>
                 <View style={styles.uploadBtn}>
-                    <ActionButton text="Upload"/>
+                    <ActionButton text="Upload" onPress={uploadImage}/>
                 </View>
             </View>
             

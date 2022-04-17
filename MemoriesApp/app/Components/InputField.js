@@ -3,6 +3,9 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Colours } from '../constants/theme';
 
+//InputField: A text field that has an icon beside it and has
+//a modified design
+
 const InputField = ({icon, style, ...otherProps}) => {
   return (
     <View style={styles.inputWrap}>

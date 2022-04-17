@@ -1,6 +1,10 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { Colours } from '../constants/theme'
+
+//LogoHeader: The logo besides the app name that is 
+//meant to be displayed on the header
+
 const LogoHeader = () => {
   return (
     <View style={styles.logo}>

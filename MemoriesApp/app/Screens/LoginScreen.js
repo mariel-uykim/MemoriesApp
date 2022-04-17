@@ -26,6 +26,10 @@ const loginSchema = Yup.object().shape(
     }
 )
 
+//LoginScreen: displays a form where the input is validated using Yup.
+//Checks if user credentials is correct by comparing information at the 
+//users.js file. Redirects the user to the home screen if successful.
+
 const LoginScreen = () => {
 
     const nav = useNavigation();
@@ -58,6 +62,7 @@ const LoginScreen = () => {
 
     return (
         <View style={styles.background}>
+            <View style={styles.emptyBox}/>
             <View style={styles.container}>
                 <Text style={styles.header}>Login</Text>
             </View>
@@ -69,7 +74,7 @@ const LoginScreen = () => {
                 {({handleChange, handleSubmit, errors, setFieldTouched, touched}) => (
                     <>
                         <View style={styles.form}>
-                            <InputField icon="person-circle-outline"
+                            <InputField icon="md-person"
                                         placeholder="username"
                                         placeholderTextColor="#c9c9c9" 
                                         autoCapitalize="none"
@@ -95,7 +100,7 @@ const LoginScreen = () => {
                             <Text style={styles.loginTxt}>Don't have an account?  
                                 <Text style={{fontFamily: "Poppins_700Bold"}} 
                                       onPress={() => nav.navigate("Register")}>
-                                    SignUp
+                                    Sign Up
                                 </Text>
                             </Text>
                         </View>
@@ -110,8 +115,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colours.primary,
     },
+    emptyBox: {
+        flex: 1
+    },
     container: {
-        flex: 1,
+        flex: 0.5,
         justifyContent: 'center',
         alignContent: 'center'
     },
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     form: {
-        flex: 1,
+        flex: 0.8,
         padding: 10
     },
     loginTxt: {

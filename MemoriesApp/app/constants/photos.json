@@ -1,0 +1,67 @@
+[
+    {
+        "img": "https://images.pexels.com/photos/7420374/pexels-photo-7420374.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Sea"
+    },
+    {
+        "img": "https://images.pexels.com/photos/2698871/pexels-photo-2698871.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Sea"
+    },
+    {
+        "img": "https://images.pexels.com/photos/7880463/pexels-photo-7880463.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Sea"
+    },
+    {
+        "img": "https://images.pexels.com/photos/11808270/pexels-photo-11808270.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Europe"
+    },
+    {
+        "img": "https://images.pexels.com/photos/4385711/pexels-photo-4385711.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Europe"
+    },
+    {
+        "img": "https://images.pexels.com/photos/10751486/pexels-photo-10751486.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/5417094/pexels-photo-5417094.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "NYC"
+    },
+    {
+        "img": "https://images.pexels.com/photos/168121/pexels-photo-168121.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "NYC"
+    },
+    {
+        "img": "https://images.pexels.com/photos/975771/pexels-photo-975771.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/7987857/pexels-photo-7987857.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/10518307/pexels-photo-10518307.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/4085418/pexels-photo-4085418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/8164997/pexels-photo-8164997.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "collection": "Europe"
+    },
+    {
+        "img": "https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/5478174/pexels-photo-5478174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "collection": "Hiking"
+    },
+    {
+        "img": "https://images.pexels.com/photos/10077859/pexels-photo-10077859.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "collection": "Hiking"
+    }
+
+]

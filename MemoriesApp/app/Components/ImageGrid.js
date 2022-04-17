@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { View, Image, Dimensions, Modal, TouchableOpacity } from 'react-native';
+import { View, Image, Dimensions, Modal, TouchableOpacity, Text } from 'react-native';
+import { Colours } from '../constants/theme';
 import ButtonRegular from './ButtonRegular';
+
+//ImageGrid: The individual image in a grid. Called out by 
+//the GridView component to display an image. When clicked
+//it displays an image on full size.
 
 class ImageGrid extends Component {
   constructor(props) {
@@ -16,7 +21,7 @@ class ImageGrid extends Component {
     return (
         <View style={{alignItems: 'center'}}>
             <TouchableOpacity onPress={() => this.setState({ clicked: true })}>
-              <Image source={img} style={{width:imgSize, height: imgSize, margin: 2}}/>
+              <Image source={{ uri :img }} style={{width:imgSize, height: imgSize, margin: 2}}/>
             </TouchableOpacity>
             <Modal
               animationType="slide"
@@ -38,10 +43,26 @@ class ImageGrid extends Component {
                   style={{alignItems:'flex-end', padding: 12, backgroundColor: 'transparent'}}
                 />
                 <Image 
-                  source={img} 
+                  source={{ uri :img }} 
                   style={{ flex: 1, height: undefined, width: undefined }} 
                   resizeMode="contain"
                 />
+                <View style={{
+                  flex: 0.3, 
+                  width: '100%', 
+                  position: 'absolute',
+                  bottom: 1, 
+                  backgroundColor: 'rgba(0,0,0,0.3)'
+                  }}>
+                  <Text style={{
+                    color: Colours.white,
+                    fontSize: 18,
+                    paddingHorizontal: 15,
+                    paddingVertical: 22
+                    }}>Collection: 
+                    <Text style={{fontWeight: 'bold'}}> {collection}</Text>
+                  </Text>
+                </View>
               </View >
             </Modal>
         </View>
