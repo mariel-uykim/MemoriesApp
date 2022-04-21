@@ -50,10 +50,13 @@ const LoginScreen = () => {
     }
 
     const verifyUser = (user) => {
-        const exists = Users.some((u) => u.username == user.username && u.password == user.password)
-        
-        if (exists) {
-            nav.navigate("Home", { user })
+        const existingUser = Users.filter((u) => {
+            return u.username == user.username && u.password == user.password
+        }
+        )
+
+        if (existingUser.length > 0) {
+            nav.navigate("Home", { user: existingUser[0] })
         }
         else {
             Alert.alert("Invalid Credential", "Please check input!")

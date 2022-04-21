@@ -12,7 +12,7 @@ import ButtonRegular from '../Components/ButtonRegular';
 //and upload a photo from their devices into the application
 
 const AddImage = ({ route, navigation }) => {
-    const { photos } = route.params
+    const { photos, user_id } = route.params
     const [addCollection, setAddCollection] = useState(false)
     const [newCollection, setNewCollection] = useState('')
     const [selectedCollection, setSelectedCollection] = useState("Select...");
@@ -63,7 +63,8 @@ const AddImage = ({ route, navigation }) => {
            image != null) {
             let newPhoto = {
                 img: image,
-                collection: selectedCollection
+                collection: selectedCollection,
+                user_id: user_id
             }
             
             navigation.navigate({

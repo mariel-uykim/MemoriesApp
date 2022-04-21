@@ -29,7 +29,9 @@ const HomeScreen = ({ route }) => {
   const [loadedImg, setLoadedImg] = useState(false)
   const { user } = route.params
   const imgData = require('../constants/photos.json')
-  const [photos, setPhotos] = useState(imgData)
+  const [photos, setPhotos] = useState(imgData.filter((item) => {
+    return item.user_id === user.id
+  }))
   const [lastSixPhotos, setLastSixPhotos] = useState(photos)
 
   const navigation = useNavigation()
@@ -50,7 +52,9 @@ const HomeScreen = ({ route }) => {
   //data and updates the last six photos. This loads once when the home
   //screen is newly loaded
   if(!loadedImg) {
-    storeData(imgData)
+    storeData(imgData.filter((item) => {
+      return item.user_id === user.id
+    }))
 
     AsyncStorage.getItem('photos').then(
       (val) => { setPhotos(JSON.parse(val)) }
@@ -72,7 +76,7 @@ const HomeScreen = ({ route }) => {
   useEffect(() => {
     if (route.params?.img) {
       setPhotos(photos => [...photos, route.params.img])
-      setLastSixPhotos(photos.slice(-6))
+      setLastSixPhotos([...photos, route.params.img].slice(-6))
 
       let curr = route.params.img.collection
 
@@ -159,7 +163,11 @@ const HomeScreen = ({ route }) => {
         />
         <GridView data={lastSixPhotos}/>
       </View>
-      <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate("AddImage", { photos })}>
+      <TouchableOpacity style={styles.addBtn} onPress={() => 
+        navigation.navigate("AddImage", { 
+                              photos: photos,
+                              user_id: user.id 
+                            })}>
         <Ionicons name="add" size={70} color={Colours.white} style="addIcon"/>
       </TouchableOpacity>
     </View>

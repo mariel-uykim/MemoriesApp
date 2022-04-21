@@ -11,8 +11,7 @@ Features:
 - Can view an individual photo by clicking on it
 
 Limitations:
-- Users are fixed (signing up doesn't modify the user base)
-- Images are shared between users (doesn't change based on user)
+- Users are fixed (signing up allows entry but doesn't modify the user base)
 - Uploaded images and new categories only stay until the app is closed
 
 Usage Instructions:

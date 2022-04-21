@@ -58,6 +58,7 @@ const RegisterScreen = () => {
             Alert.alert("Username Exists", "Please use a different username")
         }
         else {
+            user.id = Math.floor(Math.random() * 20) + 3
             setUsers(users => [...users, user])
             nav.navigate("Home", { user })
         }
